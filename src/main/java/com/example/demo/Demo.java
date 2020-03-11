@@ -20,7 +20,11 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 @SpringBootApplication
 public class Demo {
 
-	 public static void main(final String[] args) throws InterruptedException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+    public static void main(String[] args) {
+        SpringApplication.run(Demo.class, args);
+    }
+
+	 public static void main2(final String[] args) throws InterruptedException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
 	        // Spring Java config
 		    System.out.println("hola");
 	        final AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
@@ -33,7 +37,7 @@ public class Demo {
 	        // Spring xml config
 	        // ApplicationContext context = new ClassPathXmlApplicationContext("spring-batch.xml");
 
-	        JobExecution j = runJob(context, "firstBatchJob");
+	        //JobExecution j = runJob(context, "firstBatchJob");
 	        System.out.println("first job finish");
 	        
 	        //Thread.sleep(100000);

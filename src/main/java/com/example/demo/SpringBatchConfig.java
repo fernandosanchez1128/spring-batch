@@ -13,6 +13,8 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
@@ -31,11 +33,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
 @EnableBatchProcessing
+@Configuration
 public class SpringBatchConfig {
 	 	@Autowired
 	    private JobBuilderFactory jobs;
@@ -46,7 +50,7 @@ public class SpringBatchConfig {
 	    @Value("input/record.csv")
 	    private Resource inputCsv;
 	 
-	    @Value("input/output.xml")
+	    @Value("input/output")
 	    private Resource outputXml;
 	    
 	    @Autowired 
@@ -123,7 +127,7 @@ public class SpringBatchConfig {
 	                .<Transaction, Transaction> chunk(2)
 	                .reader(classReader())
 	                .processor(processor)
-	                .writer(writer)
+	                .writer(new NoOpItemWriter())
 	                .build();
 	    }
 
@@ -135,4 +139,5 @@ public class SpringBatchConfig {
 	        		.incrementer(new RunIdIncrementer())
 	        		.build();
 	    }
+	
 }

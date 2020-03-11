@@ -5,6 +5,8 @@ import java.net.MalformedURLException;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
+import org.springframework.batch.core.explore.JobExplorer;
+import org.springframework.batch.core.explore.support.JobExplorerFactoryBean;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.SimpleJobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
@@ -43,7 +45,7 @@ public class DataBaseConfig {
         return dataSource;
     }
  
-  //  @Bean
+    
     public DataSourceInitializer dataSourceInitializer(DataSource dataSource) throws MalformedURLException {
         ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
 
@@ -64,7 +66,6 @@ public class DataBaseConfig {
         factory.setDataSource(dataSource());
         factory.setTransactionManager(getTransactionManager());
         factory.afterPropertiesSet();
-        
         return (JobRepository) factory.getObject();
     }
  
@@ -74,13 +75,23 @@ public class DataBaseConfig {
     }
  
     
-    
+    //@Bean
     public JobLauncher getJobLauncher() throws Exception {
         SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
         jobLauncher.setJobRepository(getJobRepository());
         jobLauncher.afterPropertiesSet();
         return jobLauncher;
     }
+    
+    
+    //@Bean
+    public JobExplorer getJobExplorer() throws Exception {
+    	JobExplorerFactoryBean factoryBean = new JobExplorerFactoryBean();
+    	factoryBean.setDataSource(dataSource());
+    	factoryBean.afterPropertiesSet();
+    	return factoryBean.getObject();
+    }
+  
     
     
 
